@@ -1,308 +1,73 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Nova App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            background:#1a1a2e; 
+            padding:20px; 
+            height:100vh; 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-            padding: 15px;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        /* Contenitore 16:9 */
+        h1 { color:white; text-align:center; margin:20px 0; }
         .container {
-            flex: 1;
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* Proporzione 16:9 */
-            background: black;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            position:relative;
+            width:100%;
+            height:75vh;
+            background:#000;
+            border-radius:10px;
+            overflow:hidden;
         }
-        
-        /* Iframe */
         iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
+            width:100%;
+            height:100%;
+            border:none;
         }
-        
-        /* Pulsante schermo intero */
         .fullscreen-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        
-        .fullscreen-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px);
-        }
-        
-        /* Modalità fullscreen */
-        .fullscreen-mode .container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            padding-bottom: 0;
-            border-radius: 0;
-            z-index: 9999;
-        }
-        
-        .fullscreen-mode iframe {
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        .fullscreen-mode .header {
-            display: none;
-        }
-        
-        /* Loading */
-        .loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1e3c72;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            z-index: 50;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .fullscreen-btn {
-                bottom: 15px;
-                right: 15px;
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .container {
-                border-radius: 8px;
-            }
+            position:absolute;
+            bottom:15px;
+            right:15px;
+            background:rgba(0,0,0,0.8);
+            color:white;
+            border:1px solid rgba(255,255,255,0.3);
+            padding:10px 15px;
+            border-radius:6px;
+            z-index:100;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Nova Application</h1>
-        <p class="subtitle">Applicazione incorporata in formato 16:9</p>
+    <h1>Nova App</h1>
+    <div class="container">
+        <!-- URL DIRETTO senza iframe complesso -->
+        <iframe 
+            src="https://nova.delightex.com/shared/xhvsde" 
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            allow="fullscreen"
+        ></iframe>
+        <button class="fullscreen-btn" onclick="toggleFS()">⛶</button>
     </div>
     
-    <div class="container">
-        <!-- Schermata di caricamento -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Caricamento in corso...</p>
-        </div>
-        
-        <!-- Iframe con Nova Delightex -->
-        <iframe 
-            src="https://nova.delightex.com/shared/xhvsde"
-            allowfullscreen
-            title="Nova Delightex Application"
-            id="novaFrame"
-        ></iframe>
-        
-        <!-- Pulsante schermo intero -->
-        <button class="fullscreen-btn" id="fullscreenBtn">
-            ⛶ Schermo Intero
-        </button>
-    </div>
-
     <script>
-        // Elementi DOM
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const loading = document.getElementById('loading');
-        const novaFrame = document.getElementById('novaFrame');
-        const body = document.body;
-        
-        // Variabile stato fullscreen
-        let isFullscreen = false;
-        
-        // ===== GESTIONE CARICAMENTO =====
-        novaFrame.addEventListener('load', function() {
-            // Nascondi loading dopo 1 secondo
-            setTimeout(() => {
-                loading.style.opacity = '0';
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                }, 300);
-            }, 1000);
-        });
-        
-        // Se errore di caricamento
-        novaFrame.addEventListener('error', function() {
-            loading.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">⚠️</div>
-                    <h3 style="margin-bottom: 10px;">Errore di caricamento</h3>
-                    <p>Prova a ricaricare la pagina</p>
-                    <button onclick="window.location.reload()" style="
-                        background: white;
-                        color: #1e3c72;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 20px;
-                        margin-top: 15px;
-                        cursor: pointer;
-                        font-weight: bold;
-                    ">
-                        Ricarica
-                    </button>
-                </div>
-            `;
-        });
-        
-        // ===== GESTIONE FULLSCREEN =====
-        fullscreenBtn.addEventListener('click', function() {
-            if (!isFullscreen) {
-                // Entra in fullscreen
-                body.classList.add('fullscreen-mode');
-                isFullscreen = true;
-                fullscreenBtn.textContent = '✕ Esci';
-                fullscreenBtn.style.bottom = '25px';
-                fullscreenBtn.style.right = '25px';
-            } else {
-                // Esci dal fullscreen
-                body.classList.remove('fullscreen-mode');
-                isFullscreen = false;
-                fullscreenBtn.textContent = '⛶ Schermo Intero';
-                fullscreenBtn.style.bottom = '20px';
-                fullscreenBtn.style.right = '20px';
-            }
-        });
-        
-        // Esci dal fullscreen con ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isFullscreen) {
-                body.classList.remove('fullscreen-mode');
-                isFullscreen = false;
-                fullscreenBtn.textContent = '⛶ Schermo Intero';
-                fullscreenBtn.style.bottom = '20px';
-                fullscreenBtn.style.right = '20px';
-            }
-        });
-        
-        // ===== FIX PER iOS =====
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            // Fix per altezza
-            document.documentElement.style.height = '100%';
-            body.style.height = '100%';
-            
-            // Permetti più funzionalità nell'iframe
-            novaFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-modals');
-            
-            // Messaggio per iOS
-            console.log('iOS rilevato - applicati fix specifici');
+        // iOS FIX - Caricamento diretto
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            document.querySelector('iframe').addEventListener('load', function() {
+                console.log('iOS - Iframe caricato');
+            });
         }
         
-        // ===== DETECT FULLSCREEN CHANGE (per browser diversi) =====
-        document.addEventListener('fullscreenchange', updateFullscreenButton);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-        document.addEventListener('mozfullscreenchange', updateFullscreenButton);
-        document.addEventListener('MSFullscreenChange', updateFullscreenButton);
-        
-        function updateFullscreenButton() {
-            const isFullscreenNow = document.fullscreenElement || 
-                                   document.webkitFullscreenElement || 
-                                   document.mozFullScreenElement || 
-                                   document.msFullscreenElement;
-            
-            if (isFullscreenNow && !isFullscreen) {
-                body.classList.add('fullscreen-mode');
-                isFullscreen = true;
-                fullscreenBtn.textContent = '✕ Esci';
-            } else if (!isFullscreenNow && isFullscreen) {
-                body.classList.remove('fullscreen-mode');
-                isFullscreen = false;
-                fullscreenBtn.textContent = '⛶ Schermo Intero';
+        function toggleFS() {
+            const iframe = document.querySelector('iframe');
+            if (!document.fullscreenElement) {
+                iframe.requestFullscreen?.() || 
+                iframe.webkitRequestFullscreen?.();
+            } else {
+                document.exitFullscreen?.() || 
+                document.webkitExitFullscreen?.();
             }
         }
     </script>
